@@ -31,6 +31,7 @@ async function initialLoad() {
     const breeds = await response.json();
     for (const breed of breeds) {
     }
+    breedSelect.dispatchEvent(new Event('change'));
   } catch (error) {
     console.log("Failed to fetch breeds:", error);
   }

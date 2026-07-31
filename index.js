@@ -190,7 +190,24 @@ export async function favourite(imgId) {
 export async function favourite(imgId) {
   // your code here
 }
+getFavouritesBtn.addEventListener("click", async () => {
+  try {
+    const response = await axios.get('/favourites');
+    const favourites = response.data
+    if (favourites.length === 0) {
+      console.log("You have no favorites yet.");
+      return;
+    }
+    for (const fav of favourites) {
+      const imgSrc = fav.image.url;
+      const imgId = fav.image_id; 
+      const imgAlt = "A favorited cat";
+    }
 
+  } catch (error) {
+    console.error("Failed to fetch favorites:", error);
+  }
+});
 /**
  * 9. Test your favourite() function by creating a getFavourites() function.
  * - Use Axios to get all of your favourites from the cat API.

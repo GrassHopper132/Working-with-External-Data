@@ -132,11 +132,50 @@ axios.interceptors.request.use((config) => {
 
     getNewCat();
 </script>
+axios.interceptors.request.use((config) => {
+  progressBar.style.width = '0%';
+  document.body.style.cursor = 'progress';
+  
+  return config;
+}, /* ...for. error handler ...... */);
+
+function updateProgress(progressEvent) {
+  console.log("Progress Event:", progressEvent);
+  if (progressEvent.lengthComputable) {
+    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+    progressBar.style.width = `${percentCompleted}%`;
+  } else {
+    progressBar.style.width = '100%';
+  }
+  /* the final piece ....*/
+}
+const response = await axios.get(`/images/search?limit=10&breed_ids=${breedId}`, {
+  onDownloadProgress: updateProgress
+});
 /**
  * 7. As a final element of progress indication, add the following to your axios interceptors:
  * - In your request interceptor, set the body element's cursor style to "progress."
  * - In your response interceptor, remove the progress cursor style from the body element.
  */
+export async function favourite(imgId) {
+  try {
+    const getResponse = await axios.get('/favourites');
+    const currentFavourites = getResponse.data;
+    const existingFavourite = currentFavourites.find(fav => fav.image_id === imgId);
+
+    if (existingFavourite) {
+      await axios.delete(`/favourites/${existingFavourite.id}`);
+      console.log("Favorite removed.");
+      
+    } else {
+      await axios.post('/favourites', { image_id: imgId });
+      console.log("Favorite added.");
+    }
+    
+  } catch (error) {
+    console.error("Failed to toggle favourite:", error);
+  }
+}
 /**
  * 8. To practice posting data, we'll create a system to "favourite" certain images.
  * - The skeleton of this function has already been created for you.

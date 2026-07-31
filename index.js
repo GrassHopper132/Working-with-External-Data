@@ -23,7 +23,7 @@ const API_KEY = "live_nThQPL3ghRww3nzDIeqvc5A6u906IzABkL4VaAmcd7iAhJmZECMzYDKlGu
  */
 async function initialLoad() {
   try {
-    const response = await fetch(`https://api.thecatapi.com/v1/breeds`, {
+    const response = await axios.get(`https://api.thecatapi.com/v1/breeds`, {
       headers: {
         'live_nThQPL3ghRww3nzDIeqvc5A6u906IzABkL4VaAmcd7iAhJmZECMzYDKlGuDfi3WW': API_KEY
       }
@@ -55,7 +55,7 @@ initialLoad();
 breedSelect.addEventListener("change", async (event) => {
   const breedId = event.target.value;
   try {
-    const response = await fetch("https://api.thecatapi.com/v1/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&order=RANDOM&page=0&limit=10", requestOptions)
+    const response = await axios.get("https://api.thecatapi.com/v1/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&order=RANDOM&page=0&limit=10", requestOptions)
     headers: {
       'x-api-key': API_KEY
     }

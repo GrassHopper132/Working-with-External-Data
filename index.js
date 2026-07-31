@@ -94,7 +94,13 @@ for (const image of imageData) {
  * - Add a console.log statement to indicate when requests begin.
  * - As an added challenge, try to do this on your own without referencing the lesson material.
  */
-
+axios.interceptors.request.use((config) => {
+  console.log("Request started...")'
+    config.metsdata = { startTime: new Date(.getTime() };
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
 /**
  * 6. Next, we'll create a progress bar to indicate the request is in progress.
  * - The progressBar element has already been created for you.
@@ -110,7 +116,22 @@ for (const image of imageData) {
  *   once or twice per request to this API. This is still a concept worth familiarizing yourself
  *   with for future projects.
  */
+<script>
+    const cat = document.getElementById('cat');
+    cat.addEventListener("click", getNewCat);
 
+    async function getNewCat() {
+        cat.style.cursor = 'wait';
+        const response = await fetch("https://api.thecatapi.com/v1/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&order=RANDOM&page=0&limit=1", requestOptions)");
+        const jsonData = await response.json();
+        const url = jsonData.message;
+
+        cat.src = url;
+        cat.style.cursor = 'pointer';
+    }
+
+    getNewCat();
+</script>
 /**
  * 7. As a final element of progress indication, add the following to your axios interceptors:
  * - In your request interceptor, set the body element's cursor style to "progress."
